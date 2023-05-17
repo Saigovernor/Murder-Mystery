@@ -28,7 +28,9 @@ SELECT *
 FROM person 
 WHERE name LIKE '%Annabel%' AND address_street_name = 'Franklin Ave'
 ``` 
-![ANN](https://github.com/Saigovernor/Murder-Mystery/assets/118802056/d96a1a6a-e3df-4558-bf8f-d2d5f0d34e2f)
+![ANN](https://github.com/Saigovernor/Murder-Mystery/assets/118802056/d9fbed23-a06e-428d-9832-4f0fc18038fd)
+
+<br>
 The name of the first witness is Annabel Miller. Her whereabouts need to be investigated in order to find out the possible location where the crime was committed. I searched for her details and checked if she visited the gym. I’ve made use of 2 subqueries, one to store the result of the last query (stored as Annabel) and then used it to join the get_fit_now_member table to check if she’s a member of the gym and finally if she’s a member, was she there on the day of the crime. The second subquery is stored as “ann_gym.”
 ``` sql 
   -- let's find annabel's details to fully track her movement on the day of the crime
