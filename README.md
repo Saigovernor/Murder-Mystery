@@ -8,3 +8,8 @@ In this murder mystery challenge, we will investigate a crime that occurred on J
 ## Database Information 
 To begin the investigation, I accessed the provided SQLite database using the online tool available at https://www.sqliteonline.com. After loading the database file, I examined the tables and their contents to gather relevant information.
 ![schema](https://github.com/Saigovernor/Murder-Mystery/assets/118802056/87480b85-c4c0-4290-800d-d3ed9d77aa0a)
+The tables contained in this database will aid my understanding of the crime situation and eventually pinpoint the person behind this murder. 
+
+## Approach and Analysis 
+My approach towards this is to retrieve the crime scene report to identify potential suspects, witnesses or any other clues that might lead me to the perpetrator of the crime. 
+``` sql 
