@@ -7,7 +7,7 @@ In this murder mystery challenge, we will investigate a crime that occurred on J
 
 ## Database Information 
 To begin the investigation, I accessed the provided SQLite database using the online tool available at https://www.sqliteonline.com. After loading the database file, I examined the tables and their contents to gather relevant information.
-![schema](https://github.com/Saigovernor/Murder-Mystery/assets/118802056/87480b85-c4c0-4290-800d-d3ed9d77aa0a)
+![schema](https://github.com/Saigovernor/Murder-Mystery/assets/118802056/87480b85-c4c0-4290-800d-d3ed9d77aa0a)<br>
 The tables contained in this database will aid my understanding of the crime situation and eventually pinpoint the person behind this murder. 
 
 ## Approach and Analysis 
@@ -21,17 +21,20 @@ WHERE date = '20180115' and city = 'SQL City' and type = 'murder'
 <br>
 The description from the police report says; 
 > Security footage shows that there were 2 witnesses. The first witness lives at the last house on "Northwestern Dr". The second witness, named Annabel, lives somewhere on "Franklin Ave"
-<br>
-The next task is to find the 2 witnesses. I’ll start with the witness I have more details of, which is *Annabel*. 
+>
+The next task is to find the 2 witnesses. I’ll start with the witness I have more details of, which is Annabel. 
+
 ``` sql 
 SELECT * 
 FROM person 
 WHERE name LIKE '%Annabel%' AND address_street_name = 'Franklin Ave'
 ``` 
 ![ANN](https://github.com/Saigovernor/Murder-Mystery/assets/118802056/d9fbed23-a06e-428d-9832-4f0fc18038fd)
-
 <br>
-The name of the first witness is Annabel Miller. Her whereabouts need to be investigated in order to find out the possible location where the crime was committed. I searched for her details and checked if she visited the gym. I’ve made use of 2 subqueries, one to store the result of the last query (stored as Annabel) and then used it to join the get_fit_now_member table to check if she’s a member of the gym and finally if she’s a member, was she there on the day of the crime. The second subquery is stored as “ann_gym.”
+<br>
+The name of the first witness is Annabel Miller. Her whereabouts need to be investigated in order to find out the possible location where the crime was committed. I searched for her details and checked if she visited the gym. <br>
+I’ve made use of 2 subqueries, one to store the result of the last query (stored as Annabel) and then used it to join the get_fit_now_member table to check if she’s a member of the gym and finally if she’s a member, was she there on the day of the crime. The second subquery is stored as "ann_gym". <br>
+
 ``` sql 
   -- let's find annabel's details to fully track her movement on the day of the crime
 WITH annabel as(  
@@ -55,5 +58,5 @@ where membership_id in
 	(SELECT id from ann_gym)
       )
   ```
-   
 
+   
