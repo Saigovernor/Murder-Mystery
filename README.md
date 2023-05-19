@@ -11,7 +11,7 @@ To begin the investigation, I accessed the provided SQLite database using the on
 The tables contained in this database will aid my understanding of the crime situation and eventually pinpoint the person behind this murder. 
 
 ## Approach and Analysis 
-My approach towards this is to retrieve the crime scene report to identify potential suspects, witnesses or any other clues that might lead me to the perpetrator of the crime. 
+My approach towards this is to initially retrieve the crime scene report to identify potential suspects, witnesses or any other clues that might lead me to the perpetrator of the crime. 
 ``` sql 
 SELECT *  --use the police report to check for possible suspects
 FROM crime_scene_report
@@ -58,5 +58,25 @@ where membership_id in
 	(SELECT id from ann_gym)
       )
   ```
+![Picture3](https://github.com/Saigovernor/Murder-Mystery/assets/118802056/a186d123-e731-4049-81e8-6218c825bfe9)
+<br>
+The output of this query shows:
+-	She’s a member of the gym. 
+-	The last time she was at the gym was the 9th of January. 
+If she was not at the gym on the day of the crime, where was she then? Mhm, only one place to check, the Facebook event! 
+``` sql 
+WITH annabel as(  
+  SELECT * 
+  from person 
+  where name LIKE '%Annabel%' and address_street_name = 'Franklin Ave'
+    )
+SELECT * 
+from facebook_event_checkin f 
+join annabel a 
+on a.id = f.person_id
+``` 
+![Picture4](https://github.com/Saigovernor/Murder-Mystery/assets/118802056/bea6324d-2c6c-4ec8-8b81-06608e898a0e) <br>
+Voila! She was indeed at the Facebook event. Since Annabel is a witness, we can conclude that the crime happened at the Facebook event.<rbr>
+Before moving on to the next witness, what was said in Annabel’s witness report?
+<br>
 
-   
