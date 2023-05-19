@@ -148,6 +148,46 @@ FROM interview i
 JOIN morty m 
 ON i.person_id = m.id
 ```
+> “I heard a gunshot and then saw a man run out. He had a "Get Fit Now Gym" bag. The membership number on the bag started with "48Z". Only gold members have those bags. The man got into a car with a plate that included "H42W." 
+> 
+This was Morty’s report, and he has given some extremely helpful cues to lead me down the criminal’s trail. 
+So far, these are the insights drawn from the witnesses’ reports: 
+-	The suspect was at the gym on January 9th.
+-	The person has a gold membership. 
+-	The membership id contains “48Z”.
+-	A car with plate number containing “H42W” was used to perpetrate the crime. 
 
+## FINDING THE CRIMINAL(S)
+From here on in, finding the prime suspect(s) seems straightforward thanks to Morty’s keen eye for detail. I’ll use some of the descriptions above to narrow down the search.
+``` sql 
+SELECT * 
+FROM get_fit_now_check_in c 
+JOIN get_fit_now_member m 
+ON m.id = c.membership_id
+WHERE check_in_date = '20180109' AND membership_status = 'gold' AND membership_id LIKE '%48Z%'
+``` 
+![Picture8](https://github.com/Saigovernor/Murder-Mystery/assets/118802056/de1128d9-9e3e-4d7b-a9f9-1589b61e8926)
+
+We have 2 gold members that were at the gym on the 9th of January where Annabel claimed to have seen the suspect. Were these two at the scene of the crime? Let’s find out!
+<br>
+```
+with prime_suspects as(
+SELECT * 
+FROM get_fit_now_check_in c 
+JOIN get_fit_now_member m 
+ON m.id = c.membership_id
+WHERE check_in_date = '20180109' AND membership_status = 'gold' AND membership_id LIKE '%48Z%')
+
+SELECT *
+FROM facebook_event_checkin f 
+JOIN prime_suspects pm 
+USING (person_id)
+```
+*Moment of Truth*
+	
+![Picture9](https://github.com/Saigovernor/Murder-Mystery/assets/118802056/646950fb-e4c2-4e2e-9f1a-5c30dfb042e6)
+
+Wow! Seems we have our CRIMINAL!
+Only Jeremy Bowers was at the scene of the crime. Surely this means it was him who committed the crime, right? Well, everyone has a right to fair hearing so, what does he have to say? Let’s retrieve this from the interview table. 
 
 
