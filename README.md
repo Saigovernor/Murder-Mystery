@@ -77,6 +77,77 @@ on a.id = f.person_id
 ``` 
 ![Picture4](https://github.com/Saigovernor/Murder-Mystery/assets/118802056/bea6324d-2c6c-4ec8-8b81-06608e898a0e) <br>
 Voila! She was indeed at the Facebook event. Since Annabel is a witness, we can conclude that the crime happened at the Facebook event.<rbr>
-Before moving on to the next witness, what was said in Annabel’s witness report?
-<br>
+Before moving on to the next witness, what was said in Annabel’s witness report? <br>  
+```
+WITH annabel as(  
+  SELECT * 
+  from person 
+  where name LIKE '%Annabel%' and address_street_name = 'Franklin Ave'
+    )
+SELECT *
+from interview i
+join annabel a 
+on i.person_id = a.id
+```
+> "I saw the murder happen, and I recognized the killer from my gym when I was working out last week on January the 9th” she says
+>
+Interesting. Now we know that the prime suspect was indeed present at the gym on the 9th of January. That’s all the information we need from Annabel for now. <br>
+
+Remember, according to the police report, there were two witnesses. The other witness lives at the last house on “Northwestern Dr.” Let’s write some sql query to find the last house on this street. 
+``` sql 
+SELECT * 
+FROM person 
+WHERE address_street_name LIKE '%Northwestern%'
+ORDER BY address_number desc 
+LIMIT 1
+```
+![Picture6](https://github.com/Saigovernor/Murder-Mystery/assets/118802056/99133ccc-679f-44ff-b4ac-76129cbb070f)
+
+
+The name of our 2nd witness is Morty Shapiro! This begs the question, which places did Morty visit on the day of the crime? Was he at the gym on the day of the Facebook event? These are pertinent questions that need to be answered. Let’s investigate! 
+``` sql
+WITH morty as (
+SELECTWHEREORDER BYfrom person 
+WHEREORDER BYdress_street_name LIKE '%Northwestern%'
+ORDER BY address_number desc 
+LIMIT 1 )
+
+-- was morty at the gym? --
+SELECT m.id, m.name, license_id, person_id, membership_start_date, membership_status
+FROM get_fit_now_member g
+JOIN morty m
+ON m.id = g.person_id
+```
+This query returns an empty result set which means Morty is not a member of the gym, therefore he couldn’t have been there. <br>
+He’s a witness so he must have been at the Facebook party, let’s confirm this assumption. 
+``` sql 
+WITH morty as (
+SELECT * from person 
+WHERE address_street_name LIKE '%Northwestern%'
+ORDER BY address_number desc 
+LIMIT 1 )
+
+SELECT *
+FROM morty m 
+JOIN facebook_event_checkin f 
+ON m.id = f.person_id
+```
+![Picture7](https://github.com/Saigovernor/Murder-Mystery/assets/118802056/8159a7e0-6666-4eb2-ada7-cfd565711e27)
+
+Morty indeed checked in for the Funky Grooves Tour on the 15th of January, the day the crime happened. His whereabouts for the day have been ascertained, and now it’s time to get his witness report. 
+``` sql 
+WITH morty as (
+SELECT * 
+FROM person 
+WHERE address_street_name LIKE '%Northwestern%'
+ORDER BY address_number desc 
+LIMIT 1
+)
+SELECT * 
+FROM interview i 
+JOIN morty m 
+ON i.person_id = m.id
+```
+
+
 
