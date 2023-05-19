@@ -226,4 +226,21 @@ AND p.id IN (SELECT person_id
 	
 From this query, it seems that Jeremy Bowers was sent by Miranda Priestly. 
 
+Finally. I inserted my answers into the solution table to indeed verify that I was correct, and our murderer is Jeremy Bowers. 
+``` sql 
+INSERT into solution (user, value)
+VALUES (1, 'Jeremy Bowers');
+
+INSERT into solution(user, value)
+VALUES(1, 'Miranda Priestly');
+```
+![Picture11](https://github.com/Saigovernor/Murder-Mystery/assets/118802056/5c966e64-545f-4ee8-8cba-428f9ed07e10)
+![Picture12](https://github.com/Saigovernor/Murder-Mystery/assets/118802056/017695c2-7922-41fc-b679-1a9a565952c8)
+	
+Looks like I got the answers correctly. 
+
+## RECOMMENDATION 
+-	LOCK THEM UP 
+
+
 
