@@ -188,6 +188,42 @@ USING (person_id)
 ![Picture9](https://github.com/Saigovernor/Murder-Mystery/assets/118802056/646950fb-e4c2-4e2e-9f1a-5c30dfb042e6)
 
 Wow! Seems we have our CRIMINAL!
-Only Jeremy Bowers was at the scene of the crime. Surely this means it was him who committed the crime, right? Well, everyone has a right to fair hearing so, what does he have to say? Let’s retrieve this from the interview table. 
+Only Jeremy Bowers was at the scene of the crime. Surely this means it was him who committed the crime, right? Well, everyone has a right to fair hearing so, what does he have to say? <br>
+Let’s retrieve this from the interview table. 
+``` sql
+WITH prime_suspects as(
+SELECT * 
+FROM get_fit_now_check_in c 
+JOIN get_fit_now_member m 
+ON m.id = c.membership_id
+WHERE check_in_date = '20180109' AND membership_status = 'gold' AND membership_id LIKE '%48Z%')
+
+SELECT *
+FROM interview i 
+JOIN prime_suspects pm 
+USING (person_id)
+```
+> “I was hired by a woman with a lot of money. I don't know her name but I know she's around 5'5" (65") or 5'7" (67"). She has red hair and she drives a Tesla Model S. I know that she attended the SQL Symphony Concert 3 times in December 2017.”
+>
+You nasty criminal! <br>
+I need to figure out who is the lynchpin behind this murder. 
+``` sql
+SELECT p.id, p.name, p.address_street_name, d.hair_color, d.gender
+FROM person p 
+LEFT JOIN drivers_license d 
+ON d.id = p.license_id
+LEFT JOIN income i 
+ON i.ssn = p.ssn 
+WHERE height BETWEEN 65 and 67 AND d.hair_color = 'red' AND car_make = 'Tesla' and gender = 'female' 
+AND p.id IN (SELECT person_id
+             FROM facebook_event_checkin 
+             WHERE event_name = 'SQL Symphony Concert' and date like '%201712__'
+             GROUP by person_id
+             HAVING COUNT(*) =3 
+            )
+```
+![Picture10](https://github.com/Saigovernor/Murder-Mystery/assets/118802056/a4ec7302-e1cc-490b-9ae7-2e17e4182cb2)
+	
+From this query, it seems that Jeremy Bowers was sent by Miranda Priestly. 
 
 
